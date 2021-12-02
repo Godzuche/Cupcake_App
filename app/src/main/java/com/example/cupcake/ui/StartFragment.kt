@@ -13,32 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cupcake
+package com.example.cupcake.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.cupcake.databinding.FragmentPickupBinding
+import com.example.cupcake.databinding.FragmentStartBinding
 
 /**
- * [PickupFragment] allows the user to choose a pickup date for the cupcake order.
+ * This is the first screen of the Cupcake app. The user can choose how many cupcakes to order.
  */
-class PickupFragment : Fragment() {
+class StartFragment : Fragment() {
 
-    // Binding object instance corresponding to the fragment_pickup.xml layout
+    // Binding object instance corresponding to the fragment_start.xml layout
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
-    private var binding: FragmentPickupBinding? = null
+    private var binding: FragmentStartBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentPickupBinding.inflate(inflater, container, false)
+        val fragmentBinding = FragmentStartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
     }
@@ -47,15 +46,19 @@ class PickupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            nextButton.setOnClickListener { goToNextScreen() }
+            // Set up the button click listeners
+            orderOneCupcake.setOnClickListener { orderCupcake(1) }
+            orderSixCupcakes.setOnClickListener { orderCupcake(6) }
+            orderTwelveCupcakes.setOnClickListener { orderCupcake(12) }
         }
     }
 
     /**
-     * Navigate to the next screen to see the order summary.
+     * Start an order with the desired quantity of cupcakes and navigate to the next screen.
      */
-    fun goToNextScreen() {
-        val action = PickupFragmentDirections.actionPickupFragmentToSummaryFragment()
+    fun orderCupcake(quantity: Int) {
+        //using safeArg navigation plugin
+        val action = StartFragmentDirections.actionStartFragmentToFlavorFragment()
         findNavController().navigate(action)
     }
 
